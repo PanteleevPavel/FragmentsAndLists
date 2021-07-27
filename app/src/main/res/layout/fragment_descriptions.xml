@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CoatOfArmsFragment">
+    tools:context=".DescriptionsFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:textSize="30sp" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/coat_of_arms"
+    <TextView
+        android:id="@+id/descriptionTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/spb" />
+        android:layout_height="wrap_content"
+        android:textSize="30sp" />
 
 </LinearLayout>

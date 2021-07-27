@@ -15,16 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class CitiesFragment extends Fragment {
+public class NotesFragment extends Fragment {
 
     public static final String CURRENT_CITY = "CurrentCity";
-    private City currentCity;
+    private Note currentNote;
     private boolean isLandscape;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cities, container, false);
+        return inflater.inflate(R.layout.fragment_notes, container, false);
     }
 
     @Override
@@ -45,15 +45,15 @@ public class CitiesFragment extends Fragment {
             layoutView.addView(tv);
             final int fi = i;
             tv.setOnClickListener(v -> {
-                currentCity = new City(fi, getResources().getStringArray(R.array.cities)[fi]);
-                showCoatOfArms(currentCity);
+                currentNote = new Note(fi, getResources().getStringArray(R.array.cities)[fi]);
+                showCoatOfArms(currentNote);
             });
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_CITY, currentCity);
+        outState.putParcelable(CURRENT_CITY, currentNote);
         super.onSaveInstanceState(outState);
     }
 
@@ -65,38 +65,38 @@ public class CitiesFragment extends Fragment {
                 == Configuration.ORIENTATION_LANDSCAPE;
 
         if (savedInstanceState != null) {
-            currentCity = savedInstanceState.getParcelable(CURRENT_CITY);
+            currentNote = savedInstanceState.getParcelable(CURRENT_CITY);
         } else {
-            currentCity = new City(0, getResources().getStringArray(R.array.cities)[0]);
+            currentNote = new Note(0, getResources().getStringArray(R.array.cities)[0]);
         }
 
         if (isLandscape) {
-            showLandCoatOfArms(currentCity);
+            showLandCoatOfArms(currentNote);
         }
     }
 
-    private void showCoatOfArms(City currentCity) {
+    private void showCoatOfArms(Note currentNote) {
         if (isLandscape) {
-            showLandCoatOfArms(currentCity);
+            showLandCoatOfArms(currentNote);
         } else {
-            showPortCoatOfArms(currentCity);
+            showPortCoatOfArms(currentNote);
         }
     }
 
-    private void showLandCoatOfArms(City currentCity) {
-        CoatOfArmsFragment detail = CoatOfArmsFragment.newInstance(currentCity);
+    private void showLandCoatOfArms(Note currentNote) {
+        DescriptionsFragment detail = DescriptionsFragment.newInstance(currentNote);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.coat_of_arms, detail); // замена фрагмента
+        fragmentTransaction.replace(R.id.descriptionTextView, detail);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 
-    private void showPortCoatOfArms(City currentCity) {
+    private void showPortCoatOfArms(Note currentNote) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), CoatOfArmsActivity.class);
-        intent.putExtra(CoatOfArmsFragment.ARG_CITY, currentCity);
+        intent.setClass(getActivity(), DescriptionsActivity.class);
+        intent.putExtra(DescriptionsFragment.ARG_NOTE, currentNote);
         startActivity(intent);
     }
 }

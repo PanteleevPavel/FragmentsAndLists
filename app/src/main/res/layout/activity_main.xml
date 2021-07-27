@@ -5,7 +5,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cities"
-        android:name="com.example.fragmentsandlists.CitiesFragment"
+        android:name="com.example.fragmentsandlists.NotesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
