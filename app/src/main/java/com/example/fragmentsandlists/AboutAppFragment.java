@@ -25,7 +25,7 @@ public class AboutAppFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack("previous");
-        fragmentTransaction.replace(R.id.side_menu_item_about_app, detail);
+        fragmentTransaction.add(R.id.notes, detail);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
         TextView aboutAppView = view.findViewById(R.id.textView);
