@@ -1,7 +1,5 @@
 package com.example.fragmentsandlists;
 
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class NotesFragment extends Fragment {
 
-    public static final String CURRENT_CITY = "CurrentCity";
+    public static final String CURRENT_NOTE = "CurrentNote";
     private Note currentNote;
-    private boolean isLandscape;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,68 +32,35 @@ public class NotesFragment extends Fragment {
 
     private void initList(View view) {
         LinearLayout layoutView = (LinearLayout) view;
-        String[] cities = getResources().getStringArray(R.array.cities);
+        String[] notes = getResources().getStringArray(R.array.notes);
 
-        for (int i = 0; i < cities.length; i++) {
-            String city = cities[i];
+        for (int i = 0; i < notes.length; i++) {
+            String note = notes[i];
             TextView tv = new TextView(getContext());
-            tv.setText(city);
+            tv.setText(note);
             tv.setTextSize(30);
             layoutView.addView(tv);
             final int fi = i;
             tv.setOnClickListener(v -> {
-                currentNote = new Note(fi, getResources().getStringArray(R.array.cities)[fi]);
-                showCoatOfArms(currentNote);
+                currentNote = new Note(fi, getResources().getStringArray(R.array.notes)[fi]);
+                showPortNotes(currentNote);
             });
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_CITY, currentNote);
+        outState.putParcelable(CURRENT_NOTE, currentNote);
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        isLandscape = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
-
-        if (savedInstanceState != null) {
-            currentNote = savedInstanceState.getParcelable(CURRENT_CITY);
-        } else {
-            currentNote = new Note(0, getResources().getStringArray(R.array.cities)[0]);
-        }
-
-        if (isLandscape) {
-            showLandCoatOfArms(currentNote);
-        }
-    }
-
-    private void showCoatOfArms(Note currentNote) {
-        if (isLandscape) {
-            showLandCoatOfArms(currentNote);
-        } else {
-            showPortCoatOfArms(currentNote);
-        }
-    }
-
-    private void showLandCoatOfArms(Note currentNote) {
+    private void showPortNotes(Note currentNote) {
         DescriptionsFragment detail = DescriptionsFragment.newInstance(currentNote);
-
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.descriptionTextView, detail);
+        fragmentTransaction.addToBackStack("previous");
+        fragmentTransaction.replace(R.id.notes, detail);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
-    }
-
-    private void showPortCoatOfArms(Note currentNote) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), DescriptionsActivity.class);
-        intent.putExtra(DescriptionsFragment.ARG_NOTE, currentNote);
-        startActivity(intent);
     }
 }
